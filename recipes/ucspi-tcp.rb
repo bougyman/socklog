@@ -9,7 +9,7 @@
 
 include_recipe "socklog::default"
 
-package "ipvsd" do
+package "ipsvd" do
   action :install
 end
 
