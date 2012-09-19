@@ -9,6 +9,10 @@
 
 include_recipe "socklog::default"
 
+package "ipvsd" do
+  action :install
+end
+
 case node[:platform]
 when "debian","ubuntu"
   runas = "nobody"
