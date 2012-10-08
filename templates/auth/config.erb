@@ -1,0 +1,10 @@
+-*
++auth.*
++authpriv.*
+p<%= node.name %>: 
+s10000000
+n10
+t604800
+u<%= node.rhythm.ipv4 %>
+!tryto -pv nc <%= node.rhythm.ipv4 %> <%= node.rhythm.ucspi_tcp.port %>
+

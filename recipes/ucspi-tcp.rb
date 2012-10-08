@@ -13,20 +13,8 @@ package "ipsvd" do
   action :install
 end
 
-case node[:platform]
-when "debian","ubuntu"
-  runas = "nobody"
-  loguser = "log"
-when "arch"
-  runas = "root"
-  loguser = "daemon"
-else
-  runas = "nobody"
-  loguser = "daemon"
-end
-
 execute "socklog-conf ucspi-tcp" do
-  command "socklog-conf ucspi-tcp #{runas} #{loguser}"
+  command "socklog-conf ucspi-tcp #{node.socklog.runas} #{node.socklog.loguser}"
   creates "/etc/sv/socklog-ucspi-tcp" # Don't bother if it already exists
   action :run
 end

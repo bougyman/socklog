@@ -9,20 +9,8 @@
 
 include_recipe "socklog::default"
 
-case node[:platform]
-when "debian","ubuntu"
-  runas = "nobody"
-  loguser = "log"
-when "arch"
-  runas = "root"
-  loguser = "daemon"
-else
-  runas = "nobody"
-  loguser = "daemon"
-end
-
 execute "socklog-conf inet" do
-  command "socklog-conf inet #{runas} #{loguser}"
+  command "socklog-conf inet #{node.socklog.runas} #{node.socklog.loguser}"
   creates "/etc/sv/socklog-inet" # Don't bother if it already exists
   action :run
 end
