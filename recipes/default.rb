@@ -29,15 +29,16 @@ else
     creates "/etc/sv/socklog-unix" # Don't bother if it already exists
     action :run
   end
-
-  link "socklog-unix" do
-    target_file File.join(node[:runit][:service_dir], "socklog")
-    to "/etc/sv/socklog-unix"
-  end
 end
 
 template "/etc/sv/socklog-unix/log/run" do
   source "unix/run.erb"
-  mode   "640"
+  mode   "750"
   owner  node.socklog.loguser
 end
+
+link "socklog-unix" do
+  target_file File.join(node[:runit][:service_dir], "socklog")
+  to "/etc/sv/socklog-unix"
+end
+
