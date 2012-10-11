@@ -21,6 +21,7 @@ action :create do
     owner node.socklog.log_user
     group node.socklog.log_group
     mode 0775
+    not_if { File.directory?(::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name)) }
   end
 
   parse_template new_resource.type
@@ -32,6 +33,16 @@ action :create do
     end
     not_if node.socklog[new_resource.type]['logs'].include? new_resource.name
     notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
+  end
+
+  template ::File.join(node[:runit][:svdir], "socklog-#{new_resource.type}", "log", "main", "new_resource.name", "config") do
+    owner node.socklog.log_user
+    group node.socklog.log_group
+    source "config.erb"
+    cookbook "socklog"
+    mode "640"
+    notifies :run, "execute[restart_#{new_resource.type}_log]"
+    variables({:log => new_resource})
   end
 
   if new_resource.var_log_link
