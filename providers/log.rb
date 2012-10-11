@@ -18,6 +18,9 @@ end
 action :create do
   directory ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
     action :create
+    owner node.socklog.log_user
+    group node.socklog.log_group
+    mode 0775
   end
 
   parse_template new_resource.type
