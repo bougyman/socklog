@@ -15,6 +15,18 @@ execute "socklog-conf inet" do
   action :run
 end
 
+execute "restart_inet_log" do
+  command "sv t #{File.join(node[:runit][:service_dir], "socklog-inet", "log")}"
+  action :nothing
+end
+
+template "/etc/sv/socklog-inet/log/run" do
+  source "inet/run.erb"
+  mode   "750"
+  owner  node.socklog.loguser
+  notifies :run, "execute[restart_inet_log]"
+end
+
 link "socklog-inet" do
   target_file File.join(node[:runit][:service_dir], "socklog-inet")
   to "/etc/sv/socklog-inet"

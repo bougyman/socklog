@@ -1,4 +1,8 @@
 action :create do
+  directory File.join(node[:runit][:service_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
+    action :create
+  end
+
   ruby_block "add_log" do
     block do
       node.socklog[new_resource.type]['logs'] << new_resource.name
