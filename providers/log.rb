@@ -1,20 +1,26 @@
-action :create do
-  execute "restart_#{new_resource.type}_log" do
-    command "sv t #{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log")}"
+def parse_template(log_type)
+  execute "restart_#{log_type}_log" do
+    command "sv t #{::File.join(node[:runit][:sv_dir], "socklog-#{log_type}", "log")}"
     action :nothing
   end
 
-  template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run") do
-    source "#{new_resource.type}/run.erb"
+  template ::File.join(node[:runit][:sv_dir], "socklog-#{log_type}", "log", "run") do
+    source "#{log_type}/run.erb"
+    cookbook "socklog"
     mode   "770"
     owner  node.socklog.log_user
     group  node.socklog.log_group
-    notifies :run, "execute[restart_#{new_resource.type}_log]"
+    action :nothing
+    notifies :run, "execute[restart_#{log_type}_log]"
   end
+end
 
+action :create do
   directory ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
     action :create
   end
+
+  parse_template new_resource.name
 
   ruby_block "add_log" do
     block do
@@ -40,6 +46,9 @@ action :create do
 end
 
 action :delete do
+
+  parse_template new_resource.name
+
   ruby_block "remove_log" do
     block do
       node.socklog[new_resource.type]['logs'].delete new_resource.name
