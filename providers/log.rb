@@ -20,7 +20,7 @@ action :create do
     action :create
   end
 
-  parse_template new_resource.name
+  parse_template new_resource.type
 
   ruby_block "add_log" do
     block do
@@ -47,7 +47,7 @@ end
 
 action :delete do
 
-  parse_template new_resource.name
+  parse_template new_resource.type
 
   ruby_block "remove_log" do
     block do
