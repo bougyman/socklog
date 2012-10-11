@@ -35,8 +35,8 @@ action :create do
     file new_resource.var_log_link do
       action :delete
       backup 1
-      not_if ::File.symlink?(new_resource.var_log_link)
-      only_if ::File.exists?(new_resource.var_log_link)
+      not_if { ::File.symlink?(new_resource.var_log_link) }
+      only_if { ::File.exists?(new_resource.var_log_link) }
     end
 
     link new_resource.var_log_link do
