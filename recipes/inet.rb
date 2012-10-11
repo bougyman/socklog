@@ -10,7 +10,7 @@
 include_recipe "socklog::default"
 
 execute "socklog-conf inet" do
-  command "socklog-conf inet #{node.socklog.runas} #{node.socklog.loguser}"
+  command "socklog-conf inet #{node.socklog.runas} #{node.socklog.log_user}"
   creates "/etc/sv/socklog-inet" # Don't bother if it already exists
   action :run
 end
@@ -23,7 +23,8 @@ end
 template "/etc/sv/socklog-inet/log/run" do
   source "inet/run.erb"
   mode   "750"
-  owner  node.socklog.loguser
+  owner  node.socklog.log_user
+  group  node.socklog.log_group
   notifies :run, "execute[restart_inet_log]"
 end
 

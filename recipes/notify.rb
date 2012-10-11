@@ -10,7 +10,7 @@
 include_recipe "socklog::default"
 
 execute "socklog-conf notify" do
-  command "socklog-conf notify #{node.socklog.runas} #{node.socklog.loguser}"
+  command "socklog-conf notify #{node.socklog.runas} #{node.socklog.log_user}"
   creates "/etc/sv/socklog-notify" # Don't bother if it already exists
   action :run
 end

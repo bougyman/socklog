@@ -13,10 +13,10 @@ end
 case node[:platform]
 when "debian","ubuntu"
   node.socklog.runas = "nobody"
-  node.socklog.loguser = "log"
+  node.socklog.log_user = "log"
 when "arch"
   node.socklog.runas = "root"
-  node.socklog.loguser = "daemon"
+  node.socklog.log_user = "daemon"
 end
 
 if ["debian","ubuntu"].include? node[:platform]
@@ -29,7 +29,7 @@ if ["debian","ubuntu"].include? node[:platform]
   end
 else
   execute "socklog-conf unix" do
-    command "socklog-conf unix #{node.socklog.runas} #{node.socklog.loguser}"
+    command "socklog-conf unix #{node.socklog.runas} #{node.socklog.log_user}"
     creates "/etc/sv/socklog-unix" # Don't bother if it already exists
     action :run
   end
@@ -43,7 +43,8 @@ end
 template "/etc/sv/socklog-unix/log/run" do
   source "unix/run.erb"
   mode   "750"
-  owner  node.socklog.loguser
+  owner  node.socklog.log_user
+  group  node.socklog.log_group
   notifies :run, "execute[restart_unix_log]"
 end
 

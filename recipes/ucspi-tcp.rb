@@ -14,7 +14,7 @@ package "ipsvd" do
 end
 
 execute "socklog-conf ucspi-tcp" do
-  command "socklog-conf ucspi-tcp #{node.socklog.runas} #{node.socklog.loguser}"
+  command "socklog-conf ucspi-tcp #{node.socklog.runas} #{node.socklog.log_user}"
   creates "/etc/sv/socklog-ucspi-tcp" # Don't bother if it already exists
   action :run
 end
