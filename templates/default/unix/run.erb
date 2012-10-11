@@ -1,2 +1,2 @@
 #!/bin/sh
-exec chpst -u<%= node.socklog.loguser %> svlogd -t <%= node.socklog.unix.files.split(" ") %>
+exec chpst -u<%= node.socklog.loguser %> svlogd -t <%= node.socklog.unix.logs.join(" ") %>
