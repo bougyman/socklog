@@ -1,5 +1,5 @@
 action :create do
-  directory ::File.join(node[:runit][:service_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
+  directory ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
     action :create
   end
 
