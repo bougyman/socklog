@@ -35,7 +35,7 @@ action :create do
     notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
   end
 
-  template ::File.join(node[:runit][:svdir], "socklog-#{new_resource.type}", "log", "main", "new_resource.name", "config") do
+  template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", "new_resource.name", "config") do
     owner node.socklog.log_user
     group node.socklog.log_group
     source "config.erb"
