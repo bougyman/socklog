@@ -6,7 +6,7 @@ attribute :size, :kind_of => Integer, :default => 100000000 # 10 Megs by default
 attribute :num_files_max, :kind_of => Integer, :default => 10 # Max rotated logs to keep
 attribute :num_files_min, :kind_of => Integer, :default => 5 # How many files to keep if we're running out of space
 attribute :rotate_seconds, :kind_of => Integer, :default => 604800 # Rotate weekly by default
-attribute :remote_syslog, :kind_of => Hash, :callbacks => [ lambda { |hash| hash.keys.include? :ip } ]
+attribute :remote_syslog, :kind_of => Hash, :callbacks => { :ip => lambda { |hash| hash.keys.include? :ip } }
 attribute :prefix, :kind_of => String
 attribute :exclude_patterns, :kind_of => Array
 attribute :include_patterns, :kind_of => Array
