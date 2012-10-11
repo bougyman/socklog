@@ -31,7 +31,7 @@ action :create do
       node.socklog[new_resource.type]['logs'] << new_resource.name
       node.save
     end
-    not_if node.socklog[new_resource.type]['logs'].include? new_resource.name
+    not_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
     notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
   end
 
@@ -68,7 +68,7 @@ action :delete do
       node.socklog[new_resource.type]['logs'].delete new_resource.name
       node.save
     end
-    only_if node.socklog[new_resource.type]['logs'].include? new_resource.name
+    only_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
     notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
   end
 end

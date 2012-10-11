@@ -13,3 +13,9 @@ Attributes
 Usage
 =====
 
+Provider socklog\_log
+
+attributes:
+
+ * @num\_files\_max: maximum amount of files to keep in rotation (default: 10)
+
