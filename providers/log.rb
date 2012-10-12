@@ -32,7 +32,7 @@ action :create do
       node.save
     end
     not_if { node.socklog[new_resource.type]['logs'][new_resource.name] }
-    notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
+    notifies :create, "template[#{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run")}]", :immediately
   end
 
   template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name, "config") do
