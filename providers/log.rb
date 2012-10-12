@@ -28,7 +28,7 @@ action :create do
 
   ruby_block "add_#{new_resource.name}_log" do
     block do
-      node.socklog.[new_resource.type]['logs'] << new_resource.name
+      node.socklog[new_resource.type]['logs'] << new_resource.name
       node.save
     end
     not_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
