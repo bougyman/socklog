@@ -28,10 +28,10 @@ action :create do
 
   ruby_block "add_#{new_resource.name}_log" do
     block do
-      node.set['socklog'][new_resource.type]['logs'][new_resource.name] = true
+      node.socklog.[new_resource.type]['logs'] << new_resource.name
       node.save
     end
-    not_if { node.socklog[new_resource.type]['logs'][new_resource.name] }
+    not_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
     notifies :create, "template[#{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run")}]"
   end
 
@@ -65,10 +65,10 @@ action :delete do
 
   ruby_block "remove_log" do
     block do
-      node.socklog[new_resource.type]['logs'][new_resource.name].delete
+      node.socklog[new_resource.type]['logs'].delete new_resource.name
       node.save
     end
-    only_if { node.socklog[new_resource.type]['logs'][new_resource.name] }
+    only_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
     notifies :create, "template[/etc/sv/socklog-#{new_resource.type}/log/run]"
   end
 end

@@ -1,2 +1,2 @@
 #!/bin/sh
-exec chpst -u<%= node.socklog.log_user %> svlogd -t <%= node.socklog.unix.logs.keys.map { |l| "main/#{l}" }.join(" ") %>
+exec chpst -u<%= node.socklog.log_user %> svlogd -t <%= node.socklog.unix.logs.map { |l| "main/#{l}" }.join(" ") %>
