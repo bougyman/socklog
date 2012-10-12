@@ -26,13 +26,13 @@ action :create do
 
   parse_template new_resource.type
 
-  ruby_block "add_log" do
+  ruby_block "add_#{new_resource.name}_log" do
     block do
       node.set['socklog'][new_resource.type]['logs'][new_resource.name] = true
       node.save
     end
     not_if { node.socklog[new_resource.type]['logs'][new_resource.name] }
-    notifies :create, "template[#{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run")}]", :immediately
+    notifies :create, "template[#{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run")}]"
   end
 
   template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name, "config") do
