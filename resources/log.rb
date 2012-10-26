@@ -8,7 +8,9 @@ attribute :num_files_min, :kind_of => Integer, :default => 5 # How many files to
 attribute :rotate_seconds, :kind_of => Integer, :default => 604800 # Rotate weekly by default
 attribute :remote_syslog, :kind_of => Hash, :callbacks => { :ip => lambda { |hash| hash.keys.include? :ip } }
 attribute :prefix, :kind_of => String
-attribute :exclude_patterns, :kind_of => Array
+attribute :programs, :kind_of => Array
+attribute :facilities, :kind_of => Array
+attribute :exclude_patterns, :kind_of => Array, :default => ["*"]
 attribute :include_patterns, :kind_of => Array
 attribute :include_error_patterns, :kind_of => Array
 attribute :exclude_error_patterns, :kind_of => Array

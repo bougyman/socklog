@@ -17,6 +17,14 @@ p<%= @log.prefix %>
 -<%= pattern %>
   <% end -%>
 <% end -%>
+<% if @log.facility -%>
++<%= @log.facility %>.*
+<% end -%>
+<% if @log.programs -%>
+  <% @log.programs.each do |program| -%>
++*: *.*: *:*:* <%= program %>[*
+  <% end -%>
+<% end -%>
 <% if @log.include_patterns -%>
   <% @log.include_patterns.each do |pattern| -%>
 +<%= pattern %>
