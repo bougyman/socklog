@@ -9,7 +9,7 @@ attribute :rotate_seconds, :kind_of => Integer, :default => 604800 # Rotate week
 attribute :remote_syslog, :kind_of => Hash, :callbacks => { :ip => lambda { |hash| hash.keys.include? :ip } }
 attribute :prefix, :kind_of => String
 attribute :programs, :kind_of => Array
-attribute :facility, :kind_of => String
+attribute :facility, :kind_of => String # If we only want to look at one facility
 attribute :exclude_patterns, :kind_of => Array, :default => ["*"]
 attribute :include_patterns, :kind_of => Array
 attribute :include_error_patterns, :kind_of => Array
