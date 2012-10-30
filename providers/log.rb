@@ -40,7 +40,6 @@ action :create do
           node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{program}[*"
         end
         not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{program}[*" }
-        notifies :create, "socklog_log[#{new_resource.type}-main]"
       end
     end
   end
