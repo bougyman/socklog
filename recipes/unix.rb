@@ -18,6 +18,7 @@ end
 
 socklog_log "main" do
   name "main"
+  exclude_patterns []
   var_log_link "/var/log/messages"
 end
 
