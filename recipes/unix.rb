@@ -18,6 +18,7 @@ end
 
 socklog_log "unix-main" do
   log_name "main"
+  include_patterns ["*"]
   exclude_patterns node.socklog.unix.main.exclude_patterns
   var_log_link "/var/log/messages"
 end
