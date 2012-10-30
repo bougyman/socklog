@@ -34,7 +34,6 @@ action :create do
   parse_template new_resource.type
 
   if new_resource.exclude_programs_from_main
-    include_recipe "socklog::#{new_resource.type}"
     new_resource.exclude_programs_from_main.each do |program|
       ruby_block "exclude_#{new_resource.name}_#{program}_from_#{new_resource.type}_main" do
         block do
