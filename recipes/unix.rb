@@ -16,9 +16,9 @@ else
   end
 end
 
-socklog_log "main" do
+socklog_log "unix-main" do
   name "main"
-  exclude_patterns []
+  exclude_patterns node.socklog.unix.main.exclude_patterns
   var_log_link "/var/log/messages"
 end
 

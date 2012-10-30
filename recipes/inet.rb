@@ -28,6 +28,13 @@ template "/etc/sv/socklog-inet/log/run" do
   notifies :run, "execute[restart_inet_log]"
 end
 
+socklog_log "unix-main" do
+  name "main"
+  type "inet"
+  exclude_patterns node.socklog.inet.main.exclude_patterns
+  var_log_link "/var/log/inet-messages"
+end
+
 link "socklog-inet" do
   target_file File.join(node[:runit][:service_dir], "socklog-inet")
   to "/etc/sv/socklog-inet"
