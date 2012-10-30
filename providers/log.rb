@@ -39,6 +39,7 @@ action :create do
       ruby_block "exclude_#{log_name}_#{exclusion}_from_#{new_resource.type}_main" do
         block do
           node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{exclusion}[*"
+          node.save
         end
         not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{exclusion}[*" }
         notifies :create, "socklog_log[unix-main]"
