@@ -10,7 +10,7 @@ u<%= "%s:%s" % [@log.remote_syslog[:ip], (@log.remote_syslog[:port] || 514)] %>
   <% end -%>
 <% end -%>
 <% if @log.prefix -%>
-p<%= @log.prefix %>
+p<%= @log.prefix %> 
 <% end -%>
 <% if @log.exclude_patterns -%>
   <% @log.exclude_patterns.each do |pattern| -%>
