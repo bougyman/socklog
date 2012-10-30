@@ -35,12 +35,12 @@ action :create do
   parse_template new_resource.type
 
   if new_resource.exclude_programs_from_main
-    new_resource.exclude_programs_from_main.each do |program|
-      ruby_block "exclude_#{log_name}_#{program}_from_#{new_resource.type}_main" do
+    new_resource.exclude_programs_from_main.each do |exclusion|
+      ruby_block "exclude_#{log_name}_#{exclusion}_from_#{new_resource.type}_main" do
         block do
-          node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{program}[*"
+          node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{exclusion}[*"
         end
-        not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{program}[*" }
+        not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{exclusion}[*" }
         notifies :create, "socklog_log[unix-main]"
       end
     end
