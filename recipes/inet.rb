@@ -28,20 +28,10 @@ template "/etc/sv/socklog-inet/log/run" do
   notifies :run, "execute[restart_inet_log]"
 end
 
-link "/var/log/inet-messages" do
-  to File.join(node[:runit][:sv_dir], "socklog-inet", "log", "main", "main", "current")
-end
-
-template File.join(node[:runit][:sv_dir], "socklog-inet", "log", "main", "main", "config") do
-  source "config-inet.erb"
-  variables { :new_resource => OpenStruct.new(
-                                              :exclude_patterns => node.socklog.inet.main.exclude_patterns,
-                                              :size => node.socklog.inet.main.size || 100000000,
-                                              :num_files_max => node.socklog.inet.main.num_file_max || 10,
-                                              :num_files_min => node.socklog.inet.main.num_file_min || 5,
-                                              :rotate_seconds => node.socklog.inet.main.rotate_seconds || 604800,
-                                            )
-            }
+socklog_log "inet-unix" do
+  log_name "main"
+  exclude_patterns node.socklog.inet.main.exclude_patterns
+  var_log_link "/var/log/inet-messages"
 end
 
 link "socklog-inet" do

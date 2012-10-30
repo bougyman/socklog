@@ -35,18 +35,6 @@ action :create do
 
   parse_template new_resource.type
 
-  if new_resource.exclude_programs_from_main
-    new_resource.exclude_programs_from_main.each do |exclusion|
-      ruby_block "exclude_#{log_name}_#{exclusion}_from_#{new_resource.type}_main" do
-        block do
-          node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{exclusion}[*"
-          node.save
-        end
-        not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{exclusion}[*" }
-        notifies :create, "template[#{File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", "main", "config")}]"
-      end
-    end
-  end
 
   ruby_block "add_#{log_name}_log" do
     block do
@@ -65,6 +53,19 @@ action :create do
     mode "640"
     notifies :run, "execute[restart_#{new_resource.type}_log]"
     variables({:log => new_resource, :programs => programs})
+  end
+
+  if new_resource.exclude_programs_from_main
+    new_resource.exclude_programs_from_main.each do |exclusion|
+      ruby_block "exclude_#{log_name}_#{exclusion}_from_#{new_resource.type}_main" do
+        block do
+          node.socklog[new_resource.type]["main"]["exclude_patterns"] << "*.*: *:*:* #{exclusion}[*"
+          node.save
+        end
+        not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{exclusion}[*" }
+        notifies :create, "template[#{File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", "main", "config")}]"
+      end
+    end
   end
 
   if new_resource.var_log_link

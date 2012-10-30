@@ -23,20 +23,10 @@ file "/var/log/messages" do
   not_if { File.symlink?("/var/log/messages") }
 end
 
-link "/var/log/messages" do
-  to File.join(node[:runit][:sv_dir], "socklog-unix", "log", "main", "main", "current")
-end
-
-template File.join(node[:runit][:sv_dir], "socklog-unix", "log", "main", "main", "config") do
-  source "config.erb"
-  variables { :new_resource => OpenStruct.new(
-                                              :exclude_patterns => node.socklog.unix.main.exclude_patterns,
-                                              :size => node.socklog.unix.main.size || 100000000,
-                                              :num_files_max => node.socklog.unix.main.num_file_max || 10,
-                                              :num_files_min => node.socklog.unix.main.num_file_min || 5,
-                                              :rotate_seconds => node.socklog.unix.main.rotate_seconds || 604800,
-                                            )
-            }
+socklog_log "unix-main" do
+  var_log_link "/var/log/messages"
+  exclude_patterns node.socklog.unix.main.exclude_patterns
+  log_name "main"
 end
 
 link "socklog-unix" do
