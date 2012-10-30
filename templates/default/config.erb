@@ -20,8 +20,8 @@ p<%= @log.prefix %>
 <% if @log.facility -%>
 +<%= @log.facility %>.*
 <% end -%>
-<% if @log.programs -%>
-  <% @log.programs.each do |program| -%>
+<% if @programs -%>
+  <% @programs.each do |program| -%>
 +*: *.*: *:*:* <%= program %>[*
   <% end -%>
 <% end -%>

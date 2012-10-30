@@ -16,11 +16,13 @@ def parse_template(log_type)
 end
 
 action :create do
+  programs = new_resource.programs || []
   if( (new_resource.programs.nil? || new_resource.programs == []) && 
       (new_resource.include_patterns.nil? || new_resource.include_patterns == []) && 
       new_resource.facility.nil? )
-    new_resource.programs = [new_resource.name]
+    programs << new_resource.name
   end
+
   directory ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
     action :create
     owner node.socklog.log_user
@@ -47,7 +49,7 @@ action :create do
     cookbook "socklog"
     mode "640"
     notifies :run, "execute[restart_#{new_resource.type}_log]"
-    variables({:log => new_resource})
+    variables({:log => new_resource, :programs => programs})
   end
 
   if new_resource.var_log_link
