@@ -43,7 +43,7 @@ action :create do
           node.save
         end
         not_if { node.socklog[new_resource.type]["main"]["exclude_patterns"].include? "*.*: *:*:* #{exclusion}[*" }
-        notifies :create, "socklog_log[unix-main]"
+        notifies :create, "template[#{File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", "main", "config")}]"
       end
     end
   end
