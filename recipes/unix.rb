@@ -17,12 +17,6 @@ else
   end
 end
 
-file "/var/log/messages" do
-  action :delete
-  backups 1
-  not_if { File.symlink?("/var/log/messages") }
-end
-
 socklog_log "unix-main" do
   var_log_link "/var/log/messages"
   exclude_patterns node.socklog.unix.main.exclude_patterns

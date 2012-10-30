@@ -20,14 +20,6 @@ execute "restart_inet_log" do
   action :nothing
 end
 
-template "/etc/sv/socklog-inet/log/run" do
-  source "inet/run.erb"
-  mode   "750"
-  owner  node.socklog.log_user
-  group  node.socklog.log_group
-  notifies :run, "execute[restart_inet_log]"
-end
-
 socklog_log "inet-unix" do
   log_name "main"
   exclude_patterns node.socklog.inet.main.exclude_patterns
