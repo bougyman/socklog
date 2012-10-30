@@ -15,4 +15,5 @@ attribute :include_patterns, :kind_of => Array
 attribute :include_error_patterns, :kind_of => Array
 attribute :exclude_error_patterns, :kind_of => Array
 attribute :post_processor, :kind_of => String
+attribute :exclude_programs_from_main, :kind_of => Array, :default => []
 
