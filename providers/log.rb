@@ -16,8 +16,10 @@ def parse_template(log_type)
 end
 
 action :create do
-  if new_resource.programs.empty? && new_resource.include_patterns.empty? && new_resource.facility.nil?
-    new_resource.programs << new_resource.name
+  if( (new_resource.programs.nil? || new_resource.programs == []) && 
+      (new_resource.include_patterns.nil? || new_resource.include_patterns == []) && 
+      new_resource.facility.nil? )
+    new_resource.programs = [new_resource.name]
   end
   directory ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name) do
     action :create
