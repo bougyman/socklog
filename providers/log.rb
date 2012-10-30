@@ -18,7 +18,8 @@ end
 action :create do
   programs = new_resource.programs || []
   log_name = new_resource.log_name || new_resource.name
-  if( (new_resource.programs.nil? || new_resource.programs == []) && 
+  if( new_resource.log_name != "main" &&
+      (new_resource.programs.nil? || new_resource.programs == []) && 
       (new_resource.include_patterns.nil? || new_resource.include_patterns == []) && 
       new_resource.facility.nil? )
     programs << log_name
