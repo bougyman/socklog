@@ -48,14 +48,14 @@ action :create do
 
   ruby_block "add_#{log_name}_log" do
     block do
-      node.socklog[new_resource.type]['logs'] << new_resource.name
+      node.socklog[new_resource.type]['logs'] << log_name
       node.save
     end
-    not_if { node.socklog[new_resource.type]['logs'].include? new_resource.name }
+    not_if { node.socklog[new_resource.type]['logs'].include? log_name }
     notifies :create, "template[#{::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "run")}]"
   end
 
-  template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", new_resource.name, "config") do
+  template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", log_name, "config") do
     owner node.socklog.log_user
     group node.socklog.log_group
     source "config.erb"
