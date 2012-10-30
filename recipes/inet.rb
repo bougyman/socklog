@@ -29,7 +29,7 @@ template "/etc/sv/socklog-inet/log/run" do
 end
 
 socklog_log "unix-main" do
-  name "main"
+  log_name "main"
   type "inet"
   exclude_patterns node.socklog.inet.main.exclude_patterns
   var_log_link "/var/log/inet-messages"

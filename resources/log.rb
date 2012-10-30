@@ -1,5 +1,6 @@
 actions :create, :delete
 default_action :create
+attribute :log_name, :kind_of => String
 attribute :type, :kind_of => String, :equal_to => ["unix", "inet", "ucspi-tcp", "klog"], :default => "unix"
 attribute :var_log_link, :kind_of => String
 attribute :size, :kind_of => Integer, :default => 100000000 # 10 Megs by default
