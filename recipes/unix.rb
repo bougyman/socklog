@@ -21,13 +21,14 @@ directory "/var/log/socklog" do
   group node.socklog.log_group
 end
 
-Dir["/var/log/socklog/*"].each do |dir|
-  next unless File.directory? dir
-  directory dir do
-    owner node.socklog.log_user
-    group node.socklog.log_group
-    mode 2750
-  end
+execute "hup_main_log" do
+  command "sv hup #{node.runit.sv_dir}/socklog-unix/log"
+  action :nothing
+end
+
+execute "rotate_main_log" do
+  command "sv a #{node.runit.sv_dir}/socklog-unix/log"
+  action :nothing
 end
 
 socklog_log "unix-main" do
@@ -41,4 +42,23 @@ link "socklog-unix" do
   to "/etc/sv/socklog-unix"
 end
 
+node.socklog.unix.logs.each do |logdir|
+  directory "/var/log/socklog/#{logdir}" do
+    owner node.socklog.log_user
+    group node.socklog.log_group
+    mode 2750
+    notifies :run, "execute[rotate_main_log]"
+  end
 
+  next if logdir == "main"
+  file "/var/log/#{logdir}" do
+    action :delete
+    backup 1
+    not_if { File.directory?("/var/log/#{logdir}") || (File.exists?("/var/log/#{logdir}") && File.symlink?("/var/log/#{logdir}")) }
+  end
+
+  link "/var/log/#{logdir}" do
+    to "/var/log/socklog/#{logdir}/current"
+    not_if { File.directory?("/var/log/#{logdir}") || (File.exists?("/var/log/#{logdir}") && File.symlink?("/var/log/#{logdir}")) }
+  end
+end
