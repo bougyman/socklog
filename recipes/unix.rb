@@ -1,5 +1,4 @@
 include_recipe "socklog"
-require "ostruct"
 
 if ["debian","ubuntu"].include? node[:platform]
   package "socklog-run" do
@@ -14,6 +13,20 @@ else
     command "socklog-conf unix #{node.socklog.runas} #{node.socklog.log_user}"
     creates "/etc/sv/socklog-unix" # Don't bother if it already exists
     action :run
+  end
+end
+
+directory "/var/log/socklog" do
+  owner node.socklog.log_user
+  group node.socklog.log_group
+end
+
+Dir["/var/log/socklog/*"].each do |dir|
+  next unless File.directory? dir
+  directory dir do
+    owner node.socklog.log_user
+    group node.socklog.log_group
+    mode 2750
   end
 end
 

@@ -29,8 +29,7 @@ action :create do
     action :create
     owner node.socklog.log_user
     group node.socklog.log_group
-    mode 0775
-    not_if { ::File.directory?(::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", log_name)) }
+    mode 2750
   end
 
   parse_template new_resource.type
