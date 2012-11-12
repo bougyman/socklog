@@ -29,7 +29,7 @@ action :create do
     action :create
     owner node.socklog.log_user
     group node.socklog.log_group
-    mode 2750
+    mode 02750
   end
 
   parse_template new_resource.type
