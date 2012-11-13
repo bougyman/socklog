@@ -19,7 +19,12 @@ p<%= @log.prefix %>
   <% end -%>
 <% end -%>
 <% if @log.facility -%>
+  <% case @log.type -%>
+  <% when "inet" -%>
++*: <%= @log.facility %>.*
+  <% else -%>
 +<%= @log.facility %>.*
+  <% end -%>
 <% end -%>
 <% if @programs -%>
   <% @programs.each do |program| -%>
