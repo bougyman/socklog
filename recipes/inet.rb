@@ -15,9 +15,22 @@ execute "socklog-conf inet" do
   action :run
 end
 
+execute "rotate_inet_log" do
+  command "sv a #{File.join(node[:runit][:service_dir], "socklog-inet", "log")}"
+  action :nothing
+end
+
 execute "restart_inet_log" do
   command "sv t #{File.join(node[:runit][:service_dir], "socklog-inet", "log")}"
   action :nothing
+end
+
+directory "/var/log/socklog-inet" do
+  owner node.socklog.log_user
+  group node.socklog.log_group
+  mode 02750
+  notifies :run, "execute[restart_inet_log]"
+  notifies :run, "execute[rotate_inet_log]"
 end
 
 socklog_log "inet-unix" do
