@@ -19,7 +19,7 @@ end
 directory "/var/log/socklog" do
   owner node.socklog.log_user
   group node.socklog.log_group
-  mode "042750"
+  mode 02750
 end
 
 execute "hup_main_log" do
@@ -47,7 +47,7 @@ node.socklog.unix.logs.each do |logdir|
   directory "/var/log/socklog/#{logdir}" do
     owner node.socklog.log_user
     group node.socklog.log_group
-    mode "042750"
+    mode 02750
     notifies :run, "execute[rotate_main_log]"
   end
 
