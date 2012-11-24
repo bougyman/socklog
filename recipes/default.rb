@@ -12,8 +12,8 @@ when "debian","ubuntu"
   package "socklog" do
     action :install
   end
-  node.socklog.runas = "nobody"
-  node.socklog.log_user = "log"
+  node.set["socklog"]["runas"] = "nobody"
+  node.set["socklog"]["log_user"] = "log"
 when "arch"
   begin
     include_recipe "pacman"
@@ -25,8 +25,8 @@ when "arch"
       action :install
     end
   end
-  node.socklog.runas = "root"
-  node.socklog.log_user = "daemon"
+  node.set['socklog']['runas'] = "root"
+  node.set['socklog']['log_user'] = "daemon"
 else
   package "socklog" do
     action :install
