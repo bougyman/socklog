@@ -35,7 +35,7 @@ end
 
 socklog_log "inet-unix" do
   log_name "main"
-  type :inet
+  type "inet"
   exclude_patterns node.socklog.inet.main.exclude_patterns
   var_log_link "/var/log/inet-messages"
 end
