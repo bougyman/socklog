@@ -1,6 +1,6 @@
 
-default.socklog.runas = "nobody"
-default.socklog.log_user = "daemon"
+default.socklog.runas = "log"
+default.socklog.log_user = "log"
 default.socklog.log_group = "adm"
 default.socklog.inet.logs = ["main"]
 default.socklog.unix.logs = %w{main auth cron daemon debug ftp kern local mail news syslog user}
