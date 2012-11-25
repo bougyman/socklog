@@ -1,5 +1,5 @@
 
-default.socklog.runas = "log"
+default.socklog.runas = "nobody"
 default.socklog.log_user = "log"
 default.socklog.log_group = "adm"
 default.socklog.inet.logs = ["main"]
