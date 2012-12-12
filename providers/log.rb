@@ -47,7 +47,7 @@ action :create do
   template ::File.join(node[:runit][:sv_dir], "socklog-#{new_resource.type}", "log", "main", log_name, "config") do
     owner node.socklog.log_user
     group node.socklog.log_group
-    source "config.erb"
+    source "config-#{new_resource.type}.erb"
     cookbook "socklog"
     mode "640"
     notifies :run, "execute[restart_#{new_resource.type}_log]"

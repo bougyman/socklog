@@ -19,11 +19,11 @@ prhythm <%= @log.prefix %>
   <% end -%>
 <% end -%>
 <% if @log.facility -%>
-+<%= @log.facility %>.*
++*: <%= @log.facility %>.*
 <% end -%>
 <% if @programs -%>
   <% @programs.each do |program| -%>
-+*.*: *:*:* <%= program %>[*
++*: *.*: *:*:* <%= program %>[*
   <% end -%>
 <% end -%>
 <% if @log.include_patterns -%>
